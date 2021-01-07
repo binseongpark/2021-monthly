@@ -27,6 +27,7 @@
 
 # thinking list
 - 인상남았던 페이지 찾아서 퍼블리싱
+- op.gg 같은 데이터 취합 및 가공 사이트 만들어보기
 - react + redux + redux-saga + styled-component boilerplate injection 하는 방식으로
 - react-native, boilerplate, clone app, 
 - graphql server
