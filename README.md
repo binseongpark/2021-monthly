@@ -31,3 +31,5 @@
 - react-native, boilerplate, clone app, 
 - graphql server
 - docker, k8s
+
+- make develop
