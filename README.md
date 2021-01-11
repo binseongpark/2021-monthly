@@ -1,6 +1,7 @@
 # 2021 월간 박성빈
 
 ## 1월 - vue + vuex boilerplate
+- login 처리부터
 - vue-router
 - vuex
 - 인증 처리
