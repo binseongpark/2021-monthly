@@ -2,6 +2,7 @@
 
 ## 1월 - vue + vuex boilerplate
 - login 처리부터
+- alias 처리
 - vue-router
 - vuex
 - 인증 처리
