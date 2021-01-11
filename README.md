@@ -6,6 +6,7 @@
 - vue-router
 - vuex
 - 인증 처리
+- dev-tools 연동
 
 ## 2월 - docker
 
