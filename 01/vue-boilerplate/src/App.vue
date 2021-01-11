@@ -7,6 +7,7 @@
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+import './app.scss'
 
 export default {
   name: 'App',
