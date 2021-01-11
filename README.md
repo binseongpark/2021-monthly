@@ -1,6 +1,9 @@
 # 2021 월간 박성빈
 
 ## 1월 - vue + vuex boilerplate
+- vue-router
+- vuex
+- 인증 처리
 
 ## 2월 - docker
 
