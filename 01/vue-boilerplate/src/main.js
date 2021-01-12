@@ -4,8 +4,8 @@ import App from './App.vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 // 
-import Home from './views/Home.vue'
-import Login from './views/Login.vue'
+import Home from '@/views/Home.vue'
+import Login from '@/views/Login.vue'
 
 import './app.scss'
 
