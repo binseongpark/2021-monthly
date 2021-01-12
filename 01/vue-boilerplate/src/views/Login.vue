@@ -1,9 +1,7 @@
 <template>
   <div>
-    <!-- <b-container fluid>
-    </b-container> -->
-    <b-container fluid class="mt-4">
-      <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+    <b-container fluid class="mt-4 align-h">
+      <b-form v-if="show">
         <b-form-group
           id="input-group-1"
           label="Email address:"
@@ -26,7 +24,7 @@
             required
           ></b-form-input>
         </b-form-group>
-        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button type="submit" variant="outline-primary">Submit</b-button>
         <b-button type="reset" variant="danger">Reset</b-button>
       </b-form>
     </b-container>
