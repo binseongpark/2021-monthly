@@ -1,24 +1,13 @@
-# vue-boilerplate
+# todo
 
-## Project setup
-```
-npm install
-```
+- 퍼블리싱(홈, 로그인, 메인(auth 존재 시 접근))
+- 로그인
+- 메인
+- 믹스인
+- vuex
+- 완성 후 각 화면 스크린샷
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+홈 - 이런것을 볼수있습니다 설명 페이지
 
-### Compiles and minifies for production
-```
-npm run build
-```
+메인 - 메인 콘텐츠 표시. 에스파 뮤비, 짤
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

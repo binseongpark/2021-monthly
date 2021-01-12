@@ -1,6 +1,12 @@
 <template>
   <div>
-    <h2>this is home</h2>
+    <b-container fluid>
+      <b-row class="mt-4 mb-4">
+        <b-col>
+          <h2>Home Page</h2>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
