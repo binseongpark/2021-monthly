@@ -64,7 +64,16 @@
 </template>
 
 <script>
-export default {};
+export default {
+  created: function () {
+    console.log('@@@@ created')
+    console.log(this.$vm)
+  },
+  mounted: function () {
+    console.log('@@@@ mounted')
+    console.log(this.store)
+  }
+};
 </script>
 
 <style>
