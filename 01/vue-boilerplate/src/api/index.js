@@ -7,6 +7,7 @@ export default {
   yesno: () => {
 
   },
+  // user list
   getList: () => {
 
   }
