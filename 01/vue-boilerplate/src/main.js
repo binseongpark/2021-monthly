@@ -3,11 +3,13 @@ import VueRouter from 'vue-router'
 import App from './App.vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
-// 
+//
 import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
 import Main from '@/views/Main.vue'
 import NotFound from '@/views/NotFound.vue'
+
+import store from './store'
 
 import './app.scss'
 
@@ -27,7 +29,8 @@ const routes = [
   { path: '/404', component: NotFound },
 ]
 const router = new VueRouter({
-  routes
+  routes,
+  store
 })
 
 new Vue({
