@@ -48,7 +48,11 @@
       </b-row>
     </b-container>
     <!--  -->
-    <b-container fluid class="mt-4 status-bar">
+    <b-container
+      fluid
+      class="pt-3 pb-3 status-bar"
+      :class="{ 'status-bar-fill': isScroll }"
+    >
       <b-row>
         <b-col class="text-right">
           <b-button
@@ -65,13 +69,28 @@
 
 <script>
 export default {
-  created: function () {
-    console.log('@@@@ created')
-    console.log(this.$vm)
+  created: function() {
+    console.log("@@@@ created");
+    console.log(this.$vm);
+    window.addEventListener("scroll", this.handleScroll);
   },
-  mounted: function () {
-    console.log('@@@@ mounted')
-    console.log(this.store)
+  mounted: function() {
+    console.log("@@@@ mounted");
+    console.log(this.store);
+  },
+  data() {
+    return {
+      isScroll: false
+    };
+  },
+  methods: {
+    handleScroll: function() {
+      if (window.scrollY > 0) {
+        this.isScroll = true;
+      } else {
+        this.isScroll = false;
+      }
+    }
   }
 };
 </script>
@@ -81,5 +100,29 @@ export default {
   /* background-color: pink; */
   position: fixed;
   top: 0;
+  animation-name: hide;
+  animation-duration: 0.3s;
+}
+.status-bar-fill {
+  background-color: rgb(33, 33, 33);
+  animation-name: show;
+  animation-duration: 0.3s;
+}
+
+@keyframes show {
+  from {
+    background-color: transparent;
+  }
+  to {
+    background-color: rgb(33, 33, 33);
+  }
+}
+@keyframes hide {
+  from {
+    background-color: rgb(33, 33, 33);
+  }
+  to {
+    background-color: transparent;
+  }
 }
 </style>
