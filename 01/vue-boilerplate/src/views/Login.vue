@@ -6,11 +6,11 @@
           <h2>Login Page</h2>
         </b-col>
       </b-row>
-      <b-form v-if="show">
+      <b-form v-if="show" @submit.prevent="submit" :novalidate="true">
         <b-form-group label-for="input-1">
           <b-form-input
             id="input-1"
-            v-model="form.email"
+            v-model="form.id"
             type="text"
             placeholder="아이디"
             required
@@ -20,7 +20,7 @@
         <b-form-group label-for="input-2">
           <b-form-input
             id="input-2"
-            v-model="form.name"
+            v-model="form.password"
             placeholder="비밀번호"
             required
           ></b-form-input>
@@ -43,20 +43,20 @@ export default {
   data() {
     return {
       form: {
-        email: "",
-        name: "",
-        food: null,
-        checked: []
+        id: "",
+        password: ""
       },
-      foods: [
-        { text: "Select One", value: null },
-        "Carrots",
-        "Beans",
-        "Tomatoes",
-        "Corn"
-      ],
       show: true
     };
+  },
+  methods: {
+    submit: function() {
+      console.log(this.form.id);
+      console.log(this.form.password);
+
+      // validation 처리
+
+    }
   }
 };
 </script>

@@ -7,7 +7,10 @@ import mutations from './mutations'
 Vue.use(Vuex)
 
 const state = {
-  test: 'hello-world'
+  test: 'hello-world',
+  auth: {
+    loggedIn: true
+  }
 }
 
 export default new Vuex.Store({
