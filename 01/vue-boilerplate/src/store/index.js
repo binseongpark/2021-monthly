@@ -9,7 +9,7 @@ Vue.use(Vuex)
 const state = {
   test: 'hello-world',
   auth: {
-    loggedIn: true
+    loggedIn: false
   }
 }
 
