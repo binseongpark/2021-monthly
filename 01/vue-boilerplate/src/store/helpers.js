@@ -7,4 +7,8 @@ export const rootComputed = {
   ])
 }
 
-export const rootMethods = {}
+export const rootMethods = {
+  ...mapActions('auth', [
+    'login'
+  ])
+}

@@ -9,6 +9,7 @@ export default {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve()
+        // reject()
       }, LATENCY)
     })
   },

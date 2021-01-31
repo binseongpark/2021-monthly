@@ -63,11 +63,29 @@ export default {
     ...rootComputed
   },
   methods: {
+    ...rootMethods,
     submit: function() {
       console.log(this.form.id);
       console.log(this.form.password);
-
-      // validation 처리
+      if (this.form.id === "" && this.form.password === "") {
+        this.makeToast();
+      } else {
+        this.login()
+          .then(() => {
+            console.log("view success");
+            this.$router.push("main");
+          })
+          .catch(() => {
+            console.log("view error");
+          });
+      }
+    },
+    makeToast: function(variant = null) {
+      this.$bvToast.toast("아이디/비밀번호를 입력하세요", {
+        title: `Error`,
+        variant: "danger",
+        solid: true
+      });
     }
   }
 };

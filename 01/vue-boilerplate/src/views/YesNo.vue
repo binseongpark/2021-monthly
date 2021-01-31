@@ -1,6 +1,12 @@
 <template>
   <div>
-    <h1>this is yesno</h1>
+    <b-container fluid>
+      <b-row class="mt-4 mb-4">
+        <b-col>
+          <h2>YesNo Page</h2>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
