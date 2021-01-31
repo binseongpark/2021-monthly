@@ -14,5 +14,18 @@ export default {
         })
       })
       .catch(error => { throw error })
+  },
+  getYesNo({ commit }) {
+    return api.yesno()
+      .then(data => {
+        console.log('success')
+        console.log(data)
+
+        commit(types.DEFAULT_ASSIGN, {
+          key: 'yesno',
+          value: data
+        })
+      })
+      .catch(error => { throw error })
   }
 }

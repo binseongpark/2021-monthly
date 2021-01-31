@@ -6,7 +6,8 @@ export const rootComputed = {
     'loggedIn'
   ]),
   ...mapState('main', [
-    'list'
+    'list',
+    'yesno'
   ])
 }
 
@@ -15,6 +16,7 @@ export const rootMethods = {
     'login'
   ]),
   ...mapActions('main', [
-    'getList'
+    'getList',
+    'getYesNo'
   ])
 }

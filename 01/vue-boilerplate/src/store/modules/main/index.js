@@ -4,7 +4,8 @@ import mutations from './mutations'
 
 const state = () => ({
   test: 'main',
-  list: []
+  list: [],
+  yesno: {}
 })
 
 export default {
