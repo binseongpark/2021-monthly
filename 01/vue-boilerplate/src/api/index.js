@@ -6,7 +6,12 @@ const LATENCY = 1000
 
 export default {
   login: () => {
-
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve()
+        // reject()
+      }, LATENCY)
+    })
   },
   yesno: () => {
     // https://yesno.wtf/api

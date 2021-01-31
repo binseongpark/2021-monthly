@@ -7,6 +7,7 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
 import Main from '@/views/Main.vue'
+import YesNo from '@/views/YesNo.vue'
 import NotFound from '@/views/NotFound.vue'
 
 import store from './store'
@@ -30,6 +31,13 @@ const routes = [
     component: Main,
     meta: {
       requiresAuth: true
+    }
+  },
+  {
+    path: '/yesno',
+    component: YesNo,
+    meta: {
+      requiresAuth: false
     }
   },
   { path: '/404', component: NotFound },
