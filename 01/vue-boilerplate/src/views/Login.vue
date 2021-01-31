@@ -30,7 +30,15 @@
             <b-button class="mr-2" type="submit" variant="outline-primary"
               >Submit</b-button
             >
-            <b-button type="reset" variant="danger">Reset</b-button>
+            <b-button class="mr-2" type="reset" variant="danger"
+              >Reset</b-button
+            >
+            <b-button
+              class="mr-2"
+              variant="outline-primary"
+              @click="$router.push('/')"
+              >Cancel</b-button
+            >
           </b-col>
         </b-row>
       </b-form>
@@ -39,6 +47,8 @@
 </template>
 
 <script>
+import { rootComputed, rootMethods } from "@/store/helpers";
+
 export default {
   data() {
     return {
@@ -49,13 +59,15 @@ export default {
       show: true
     };
   },
+  computed: {
+    ...rootComputed
+  },
   methods: {
     submit: function() {
       console.log(this.form.id);
       console.log(this.form.password);
 
       // validation 처리
-
     }
   }
 };

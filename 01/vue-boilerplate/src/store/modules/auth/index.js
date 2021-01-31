@@ -1,5 +1,5 @@
 const state = () => ({
-  test: 'auth'
+  loggedIn: false
 })
 
 export default {

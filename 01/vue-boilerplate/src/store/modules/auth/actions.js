@@ -1,13 +1,11 @@
 import api from '@/api'
+import * as types from './mutation-types'
 
 export default {
-  //
-  getList: ({ commit }, { }) => {
-    return api.getList()
-      .then(data => {
-        console.log('@@@@ success')
-        console.log(data)
-      })
-      .catch(error => { throw error })
+  login({ commit }) {
+    commit(types.DEFAULT_ASSIGN, {
+      key: '',
+      value: ''
+    })
   }
 }

@@ -56,6 +56,13 @@
       <b-row>
         <b-col class="text-right">
           <b-button
+            class="mr-2"
+            type="submit"
+            variant="success"
+            @click="$router.push('yesno')"
+            >YesNo</b-button
+          >
+          <b-button
             type="submit"
             variant="success"
             @click="$router.push('login')"
