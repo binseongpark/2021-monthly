@@ -1,14 +1,16 @@
 # 2021 월간 박성빈
 
 ## 1월 - vue + vuex boilerplate
+
 - login 처리부터
-- alias 처리
-- vue-router
 - vuex
-- 인증 처리
-- dev-tools 연동
+- vue-router
+- 라우트 메타 필드를 이용한 가드 처리
+- dev-tools 연동. 플러그인을 설치 못하는 분들 위한
 
 ## 2월 - pixijs 를이용하여 웹게임 만들기
+
+커밍쑤운. 브라우저에서 돌아가는 게임 만들기입니다!
 
 
 ## 3월 - docker, k8s
