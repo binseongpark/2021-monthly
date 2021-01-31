@@ -1,11 +1,17 @@
 # 2021 월간 박성빈
 
 ## 1월 - vue + vuex boilerplate
+- login 처리부터
+- alias 처리
+- vue-router
+- vuex
+- 인증 처리
+- dev-tools 연동
 
-## 2월 - docker
+## 2월 - pixijs 를이용하여 웹게임 만들기
 
 
-## 3월 - 
+## 3월 - docker, k8s
 
 ## 4월
 
@@ -32,5 +38,6 @@
 - react-native, boilerplate, clone app, 
 - graphql server
 - docker, k8s
+- k8s 자격증따기
 
 - make develop
