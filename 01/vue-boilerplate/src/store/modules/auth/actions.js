@@ -12,8 +12,8 @@ export default {
           key: 'loggedIn',
           value: true
         })
+
       })
       .catch(error => { throw error })
-
   }
 }

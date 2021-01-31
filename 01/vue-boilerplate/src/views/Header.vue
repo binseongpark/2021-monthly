@@ -12,14 +12,14 @@
             v-if="$route.path === '/main'"
             type="submit"
             variant="success"
-            @click="$router.push('yesno')"
+            @click="$router.push({ path: 'yesno' }).catch(() => {})"
             >YesNo</b-button
           >
           <b-button
             v-if="$route.path === '/yesno'"
             type="submit"
             variant="success"
-            @click="$router.push('main')"
+            @click="$router.push({ path: 'main' }).catch(() => {})"
             >Main</b-button
           >
         </template>
@@ -28,7 +28,7 @@
             class="ml-2"
             type="submit"
             variant="success"
-            @click="$router.push('login')"
+            @click="$router.push({ path: 'login' }).catch(() => {})"
             >Login</b-button
           >
         </template>
