@@ -55,19 +55,23 @@
     >
       <b-row>
         <b-col class="text-right">
-          <b-button
-            class="mr-2"
-            type="submit"
-            variant="success"
-            @click="$router.push('yesno')"
-            >YesNo</b-button
-          >
-          <b-button
-            type="submit"
-            variant="success"
-            @click="$router.push('login')"
-            >Login</b-button
-          >
+          <template v-if="loggedIn">
+            <b-button
+              type="submit"
+              variant="success"
+              @click="$router.push('yesno')"
+              >YesNo</b-button
+            >
+          </template>
+          <template v-else>
+            <b-button
+              class="ml-2"
+              type="submit"
+              variant="success"
+              @click="$router.push('login')"
+              >Login</b-button
+            >
+          </template>
         </b-col>
       </b-row>
     </b-container>
@@ -75,6 +79,7 @@
 </template>
 
 <script>
+import { rootComputed, rootMethods } from "@/store/helpers";
 export default {
   created: function() {
     console.log("@@@@ created");
@@ -89,6 +94,9 @@ export default {
     return {
       isScroll: false
     };
+  },
+  computed: {
+    ...rootComputed
   },
   methods: {
     handleScroll: function() {

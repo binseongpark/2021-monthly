@@ -1,8 +1,15 @@
+import actions from './actions'
+import getters from './getters'
+import mutations from './mutations'
+
 const state = () => ({
   loggedIn: false
 })
 
 export default {
-  namespace: true,
-  state
+  namespaced: true,
+  state,
+  actions,
+  getters,
+  mutations
 }

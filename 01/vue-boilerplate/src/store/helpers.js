@@ -1,7 +1,10 @@
 import { mapState, mapGetters, mapActions, mapMutations } from 'vuex'
 
 export const rootComputed = {
-  console: () => console
+  console: () => console,
+  ...mapGetters('auth', [
+    'loggedIn'
+  ])
 }
 
 export const rootMethods = {}
