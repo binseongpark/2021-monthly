@@ -3,7 +3,7 @@
     <b-container fluid>
       <b-row class="mt-4 mb-4">
         <b-col>
-          <h2>Home Page</h2>
+          <h2>Home Page {{ `- test is ${$test}` }}</h2>
         </b-col>
       </b-row>
       <b-row>
