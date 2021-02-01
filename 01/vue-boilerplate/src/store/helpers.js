@@ -7,7 +7,8 @@ export const rootComputed = {
   ]),
   ...mapState('main', [
     'list',
-    'yesno'
+    'yesno',
+    'test'
   ])
 }
 

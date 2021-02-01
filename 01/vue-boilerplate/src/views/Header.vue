@@ -28,6 +28,13 @@
             class="ml-2"
             type="submit"
             variant="success"
+            @click="$helloWorld()"
+            >Test</b-button
+          >
+          <b-button
+            class="ml-2"
+            type="submit"
+            variant="success"
             @click="$router.push({ path: 'login' }).catch(() => {})"
             >Login</b-button
           >
