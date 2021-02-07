@@ -9,6 +9,7 @@
 - dev-tools 연동
 
 ## 2월 - pixijs 를이용하여 웹게임 만들기
+- pixijs tutorial Learning Pixi 한글화 하면서 api 공부
 
 
 ## 3월 - docker, k8s
