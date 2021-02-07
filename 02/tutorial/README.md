@@ -44,7 +44,7 @@ Pixi의 API는 실제로 Macromedia/Adobe Flash에서 검증된 API를 개선한
 
 이 하나의 파일만 있으면 Pixi를 사용할 수 있습니다. 
 
-그런 다음 기본 HTML 페이지를 만들고 `<script>` 태그를 사용하여 방금 다운로드 한 `pixi.min.js` 파일을 연결합니다. <script> 태그의 src는 웹 서버가 실행되는 루트 디렉토리에 상대적이어야 합니다. <script> 태그는 다음과 같습니다. 
+그런 다음 기본 HTML 페이지를 만들고 `<script>` 태그를 사용하여 방금 다운로드 한 `pixi.min.js` 파일을 연결합니다. `<script>` 태그의 src는 웹 서버가 실행되는 루트 디렉토리에 상대적이어야 합니다. `<script>` 태그는 다음과 같습니다. 
 
 ```html
 <script src="pixi.min.js"></script>
