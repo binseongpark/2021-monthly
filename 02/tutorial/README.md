@@ -32,3 +32,50 @@ Pixi의 API는 실제로 Macromedia/Adobe Flash에서 검증된 API를 개선한
 
 이 튜토리얼에서는 Pixi의 강력한 이미지 렌더링 기능과 장면 그래프를 결합하여 게임 제작을 시작하는 방법을 알아봅니다. 그러나 Pixi는 게임만을 위한 것이 아닙니다. 이러한 동일한 기술을 사용하여 대화형 미디어 응용 프로그램을 만들 수 있습니다. 이는 휴대폰 용 앱을 의미합니다!
 
+
+<a id='settingup'></a>
+설정
+------------
+
+<a id='installingpixi'></a>
+### Pixi 설치
+
+여기서 사용 된 버전은 v4.5.5입니다. Pixi의 릴리즈 페이지에서 pixi.min.js 파일을 찾을 수 있습니다. 또는 [Pixi의 메인 릴리즈 페이지](https://github.com/pixijs/pixi.js/releases)에서 최신 버전을 받을 수 있습니다. 
+
+이 하나의 파일만 있으면 Pixi를 사용할 수 있습니다. 
+
+그런 다음 기본 HTML 페이지를 만들고 `<script>` 태그를 사용하여 방금 다운로드 한 `pixi.min.js` 파일을 연결합니다. <script> 태그의 src는 웹 서버가 실행되는 루트 디렉토리에 상대적이어야 합니다. <script> 태그는 다음과 같습니다. 
+
+```html
+<script src="pixi.min.js"></script>
+```
+
+다음은 Pixi를 연결하고 작동하는지 테스트하는데 사용할 수 있는 기본 HTML 페이지 입니다. (이것은 `pixi.min.js`가 pixi라는 하위 폴더에 있다고 가정합니다)
+
+```html
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hello World</title>
+</head>
+  <script src="pixi/pixi.min.js"></script>
+<body>
+  <script type="text/javascript">
+    let type = "WebGL"
+    if(!PIXI.utils.isWebGLSupported()){
+      type = "canvas"
+    }
+
+    PIXI.utils.sayHello(type)
+  </script>
+</body>
+</html>
+```
+
+Pixi가 올바르게 연결되면
+다음과 같은 내용이 기본적으로 웹 브라우저의 콘솔에 표시됩니다. 
+
+```
+      PixiJS 4.4.5 - * canvas * http://www.pixijs.com/  ♥♥♥ 
+```
