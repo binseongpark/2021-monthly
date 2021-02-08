@@ -79,3 +79,12 @@ Pixi가 올바르게 연결되면
 ```
       PixiJS 4.4.5 - * canvas * http://www.pixijs.com/  ♥♥♥ 
 ```
+
+<a id='application'></a>
+Pixi 어플리케이션 및 `stage` 만들기
+------------
+
+이제 Pixi 를 사용할 수 있습니다!
+
+하지만 어떻게?
+
