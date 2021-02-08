@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Displaying the canvas</title>
+</head>
+
+<body>
+  <script src="../pixi/pixi.min.js"></script>
+  <script>
+    // create a Pixi Application
+    let app = new PIXI.Application({
+      width: 256,
+      height: 256,
+      antialiasing: true,
+      transparent: false,
+      resolution: 1
+    });
+
+    // pixi가 생성한 캔버스를 html body에 추가
+    document.body.appendChild(app.view)
+
+    // 캔버스를 채우려면 아래 코드를 사용
+    //CSS styling:
+    /*
+    app.renderer.view.style.position = "absolute"
+    app.renderer.view.style.width = window.innerWidth + "px";
+    app.renderer.view.style.height = window.innerHeight + "px";
+    app.renderer.view.style.display = "block";
+    */
+
+    // render.view 는 일반적인 <canvas> 요소입니다
+    // 다음은 선택적 대시를 추가하기 위해 참조 할 수 있는 방법입니다.
+    // border around the canvas 
+    app.renderer.view.style.border = "1px dashed black";
+
+    //To resize the canvas
+    app.renderer.resize(512, 512);
+
+
+    //To change the background color
+    app.renderer.backgroundColor = 0x061639;
+  </script>
+</body>
+
+</html>
