@@ -88,3 +88,70 @@ Pixi 어플리케이션 및 `stage` 만들기
 
 하지만 어떻게?
 
+첫 번째 단계는 이미지 표시를 시작할 수 있는 직사각형 표시 영역을 만드는 것입니다. Pixi에는 이를 생성하는 Application 개체가 있습니다. HTML `<canvas>` 요소를 자동으로 생성하고 캔버스에 이미지를 표시하는 방법을 파악합니다. 그런 다음 스테이지라는 특수 Pixi 컨테이너 개체를 만들어야 합니다. 앞서 보시겠지만 스테이지 객체는 Pixi가 표시 할 모든 항목을 포함하는 루트 컨테이너로 사용됩니다. 
+
+다음은 앱 Pixi 어플리케이션 및 단계를 만들기 위해 작성해야하는 코드입니다. HTML 문서의 `<script>` 태그 사이에 다음 코드를 추가합니다. 
+```js
+//Create a Pixi Application
+let app = new PIXI.Application({width: 256, height: 256});
+
+//Add the canvas that Pixi automatically created for you to the HTML document
+document.body.appendChild(app.view);
+```
+Pixi 사용을 시작하기 위해 작성해야하는 가장 기본적인 코드입니다. 256픽셀 x 256픽셀의 검은색 캔버스 요소를 생성하여 HTML문서에 추가합니다. 다음은 이 코드를 실행할 때 브라우저에서 나타나는 모습입니다.
+
+![Basic display](./examples/images/screenshots/01.png)
+
+네, [검은색 사각형](http://rampantgames.com/blog/?p=7745)입니다!
+
+`Pixi.Application`은 사용중인 웹 브라우저에서 사용 가능한 그래픽에 따라 Canvas Drawing API 또는 WebGL을 사용하여 그래픽을 렌더링할지 여부를 결정합니다. 인수는 옵션 개체라고하는 단일 개체입니다. 이 예제에서 너비 및 높이 속성은 캔버스의 너비와 높이를 픽셀 단위로 결정하도록 설정됩니다. 이 옵션 개체 내에 더 많은 선택적 속성을 설정할 수 있습니다. 앤티 앨리어싱, 투명도 및 해상도를 설정하는 데 사용할 수 있는 방법은 다음과 같습니다. 
+```js
+let app = new PIXI.Application({ 
+    width: 256,         // default: 800
+    height: 256,        // default: 600
+    antialias: true,    // default: false
+    transparent: false, // default: false
+    resolution: 1       // default: 1
+  }
+);
+```
+Pixi의 기본 설정에 만족한다면 이러한 옵션을 설정할 필요가 없습니다. 그러나 필요한 경우 `PIXI.Application`에 대한 Pixi의 문서를 참조하십시오.
+
+이러한 옵션은 무엇을 하나요? `antialias`는 글꼴 및 그래픽 기본 요소의 가장자리를 매끄럽게 합니다. (WebGL 앤티 앨리어싱은 일부 플랫폼에서 사용할 수 없으므로 게임의 대상 플랫폼에서 테스트해야 합니다.) `transparent`는 캔버스 배경을 투명하게 만듭니다. `resolution`를 사용하면 다양한 해상도와 픽셀 밀도의 디스플레이로 작업하기가 더 쉽습니다. 해상도 설정은 이 튜토리얼의 범위를 약간 벗어나지만 [Mat Grove's
+explanation](https://web.archive.org/web/20171203090730/http://www.goodboydigital.com/pixi-js-v2-fastest-2d-webgl-renderer/)을 확인해 보십시오. 그러나 일반적으로 `resolution`를 1로 유지하면 괜찮습니다.
+
+Pixi의 `renderer`개체는 WebGL로 기본 설정됩니다. 이는 WebGL이 믿을 수 없을만큼 빠르며 앞으로 배울 멋진 시각 효과를 사용할 수 있기 때문입니다. 그러나 WebGL을 통해 Canvas Drawing API 렌더링을 강제해야하는 경우 다음과 같이 `forceCanvas` 옵션을 `true`로 설정할 수 있습니다. 
+
+```js
+forceCanvas: true,
+```
+캔버스를 만든 후 캔버스의 배경색을 변경해야하는 경우 `app.renderer` 객체의 `backgroundColor` 속성을 16진수 색상 값으로 설정합니다. 
+```js
+app.renderer.backgroundColor = 0x061639;
+```
+`renderer`의 너비나 높이를 찾으려면 `app.renderer.view.width` 및 `app.renderer.view.height` 를 사용하세요. 
+
+캔버스의 크기를 변경하려면 `renderer`의 `resize` 메서드를 사용하고 새로운 `width` 및 `height`값을 제공합니다. 그러나 캔버스의 크기가 해상도에 맞게 조정되도록 하려면 `autoResize`를 `true`로 설정하십시오.
+```js
+app.renderer.autoResize = true;
+app.renderer.resize(512, 512);
+```
+캔버스를 전체 창에 채우려면 CSS 스타일을 적용하고 렌더러의 크기를 브라우저 창의 크기에 맞게 조정할 수 있습니다. 
+```
+app.renderer.view.style.position = "absolute";
+app.renderer.view.style.display = "block";
+app.renderer.autoResize = true;
+app.renderer.resize(window.innerWidth, window.innerHeight);
+```
+그러나 그렇게 할 경우 다음 CSS 코드를 사용하여 모든 HTML 요소에서 기본 패딩 및 여백도 0으로 설정해야 합니다. 
+```html
+<style>* {padding: 0; margin: 0}</style>
+```
+(위 코드에서 별표 *는 CSS "universal selector"로 "HTML 문서의 모든 태그"를 의미합니다.)
+
+캔버스가 브라우저창 크기에 비례하여 크기가 조정되도록하려면 [`scaleToWindow`함수](https://github.com/kittykatattack/scaleToWindow)를 사용할 수 있습니다. 
+
+<a id='sprites'></a>
+Pixi 스프라이트
+------------
+todo
