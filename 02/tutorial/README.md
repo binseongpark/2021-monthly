@@ -154,4 +154,92 @@ app.renderer.resize(window.innerWidth, window.innerHeight);
 <a id='sprites'></a>
 Pixi 스프라이트
 ------------
-todo
+
+이제 렌더러가 있으므로 이미지 추가를 시작할 수 있습니다. 렌더러에서 보이게하려는 모든 것은 `stage`라는 특별한 Pixi 객체에 추가되어야 합니다. 다음과 같이 이 특별한 `stage` 객체에 액세스 할 수 있습니다.
+```js
+app.stage
+```
+`stage`는 Pixi`Container` 객체입니다. 컨테이너를 그룹화하여 그 안에 넣은 모든 것을 저장할 수있는 일종의 빈 상자로 생각할 수 있습니다. `stage`오브젝트는 scene에서 보이는 모든 사물의 루트 컨테이너입니다. '스테이지'에 넣은 모든 것이 캔버스에 렌더링됩니다. 지금은 `stage`가 비어 있지만 곧 그 안에 물건을 넣을 것입니다. (Pixi의`Container` 객체에 대한 자세한 내용은 여기 (http://pixijs.download/release/docs/PIXI.Container.html)에서 읽을 수 있습니다.)
+
+(중요 :`stage`는 Pixi`Container`이기 때문에 다른`Container` 객체와 동일한 속성 및 메서드를 갖습니다. 그러나`stage`에는`width` 및`height` 속성이 있지만 *렌더창의 크기를 의미하지 않습니다*. 스테이지의 `width`및 `height`속성은 그 안에 넣은 물건이 차지하는 영역을 알려줍니다.
+
+그래서 당신은 무대에 무엇을 두나요? **sprites** 라는 특수 이미지 개체. 스프라이트는 기본적으로 코드로 제어 할 수있는 이미지 일뿐입니다. 상호 작용 및 애니메이션 그래픽을 만드는 데 유용한 위치, 크기 및 기타 속성을 제어 할 수 있습니다. 스프라이트를 만들고 제어하는 방법을 배우는 것은 Pixi 사용법을 배우는 데있어 가장 중요한 것입니다. 스프라이트를 만들고 스테이지에 추가하는 방법을 알고 있다면 게임을 만들기 시작하는 단계에서 조금만 더 가면됩니다.
+
+Pixi에는 게임 스프라이트를 만드는 다양한 방법 인`Sprite` 클래스가 있습니다. 이를 생성하는 세 가지 주요 방법이 있습니다.
+
+- 단일 이미지 파일에서
+- **타일셋**의 하위 이미지에서. 타일셋은 게임에 필요한 모든 이미지를 포함하는 하나의 큰 이미지입니다.
+- **텍스처 아틀라스**에서 (타일셋에서 이미지의 크기와 위치를 정의하는 JSON 파일)
+
+세 가지 방법을 모두 배우게 되겠지만, 시작하기 전에 Pixi로 이미지를 표시하기 전에 이미지에 대해 알아야 할 사항을 알아 보겠습니다.
+
+<a id='loading'></a>
+텍스처 캐시에 이미지로드
+------------
+
+Pixi는 WebGL을 사용하여 GPU에서 이미지를 렌더링하므로 이미지는 GPU가 처리 할 수있는 형식이어야합니다. WebGL 지원 이미지를 **텍스처**라고합니다. 스프라이트에 이미지를 표시하기 전에 일반 이미지 파일을 WebGL 텍스처로 변환해야합니다. 모든 것이 빠르고 효율적으로 작동하도록하기 위해 Pixi는 **텍스처 캐시**를 사용하여 스프라이트에 필요한 모든 텍스처를 저장하고 참조합니다. 텍스처의 이름은 참조하는 이미지의 파일 위치와 일치하는 문자열입니다. 즉,` "images/cat.png"`에서로드 된 텍스처가있는 경우 다음과 같이 텍스처 캐시에서 찾을 수 있습니다.
+```js
+PIXI.utils.TextureCache["images/cat.png"];
+```
+텍스처는 Pixi의 렌더러에서 작업하기에 효율적인 WebGL 호환 형식으로 저장됩니다. 그런 다음 Pixi의`Sprite` 클래스를 사용하여 텍스처를 사용하여 새 스프라이트를 만들 수 있습니다.
+```js
+let texture = PIXI.utils.TextureCache["images/anySpriteImage.png"];
+let sprite = new PIXI.Sprite(texture);
+```
+하지만 이미지 파일을로드하고 텍스처로 변환하는 방법은 무엇입니까? Pixi의 내장 `loader`개체를 사용합니다.
+
+Pixi의 강력한 `loader`개체 만 있으면 모든 종류의 이미지를로드 할 수 있습니다. 이를 사용하여 이미지를로드하고 이미지로드가 완료되면 `setup`이라는 함수를 호출하는 방법은 다음과 같습니다.
+```js
+PIXI.loader
+  .add("images/anyImage.png")
+  .load(setup);
+
+function setup() {
+  //This code will run when the loader has finished loading the image
+}
+```
+[Pixi 개발팀 권장] (http://www.html5gamedevs.com/topic/16019-preload-all-textures/p=90907) 로더를 사용하는 경우 다음과 같이`loader`의`resources` 객체에서 텍스처를 참조하여 스프라이트를 만들어야합니다.
+```js
+let sprite = new PIXI.Sprite(
+  PIXI.loader.resources["images/anyImage.png"].texture
+);
+```
+다음은 이미지를 로드하고`setup` 함수를 호출하고 로드된 이미지에서 스프라이트를 만들기 위해 작성할 수있는 완전한 코드의 예입니다.
+```js
+PIXI.loader
+  .add("images/anyImage.png")
+  .load(setup);
+
+function setup() {
+  let sprite = new PIXI.Sprite(
+    PIXI.loader.resources["images/anyImage.png"].texture
+  );
+}
+```
+이 튜토리얼에서 이미지를로드하고 스프라이트를 만드는 데 사용할 일반적인 형식입니다.
+
+다음과 같이 연결 가능한`add` 메소드로 이미지를 나열하여 여러 이미지를 동시에로드 할 수 있습니다.
+```js
+PIXI.loader
+  .add("images/imageOne.png")
+  .add("images/imageTwo.png")
+  .add("images/imageThree.png")
+  .load(setup);
+```
+더 좋은 방법은 다음과 같이 단일`add` 메서드 내의 배열에로드하려는 모든 파일을 나열하는 것입니다.
+```js
+PIXI.loader
+  .add([
+    "images/imageOne.png",
+    "images/imageTwo.png",
+    "images/imageThree.png"
+  ])
+  .load(setup);
+```
+`로더`를 사용하면 JSON 파일을 로드 할 수도 있습니다.
+
+<a id='displaying'></a>
+스프라이트 표시
+------------------
+
+번역 포기😵 예제 위주로 하자
