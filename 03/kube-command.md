@@ -8,6 +8,16 @@ kubectl create deployment httpd-frontend --image=httpd:2.4-alpine
 kubectl create deployment hello-minikube1 --image=k8s.gcr.io/echoserver:1.4
 kubectl expose deployment hello-minikube1 --type=LoadBalancer --port=8080
 
+kubectl run nginx --image=nginx --namespace="insert-namespace-name-here"
+kubectl get pods --namespace="insert-namespace-name-here"
+
+# 네임스페이스에 속하는 리소스
+kubectl api-resources --namespaced=true
+
+# 네임스페이스에 속하지 않는 리소스
+kubectl api-resources --namespaced=false
+
+
 # scale
 
 kubectl scale deployment httpd-frontend --replicas3 
