@@ -52,3 +52,13 @@ docker images
 
 docker push lemonbin/nginx
 ```
+
+# 이미지 다운로드
+```sh
+docker pull <IMAGE_NAME>
+```
+
+# 이미지 삭제
+```sh
+docker rmi <IMAGE_NAME>
+```
