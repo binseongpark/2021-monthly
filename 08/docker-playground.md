@@ -150,3 +150,37 @@ echo hello! >> $(pwd)/hello.txt
 
 curl localhost:6000/hello.txt
 ```
+
+# Entrypoint
+ENTRYPOINT 는 override 가 되지 않지만, --entrypoint라는 옵션으로 ENTRYPOINT를 강제로 override 하는 방법이 있다
+```sh
+FROM ubuntu:18.04
+
+ENTRYPOINT ["echo"]
+```
+
+```sh
+docker build . -t lets-echo
+
+docker run lets-echo hello
+# hello
+
+docker run lets-echo cat /etc/password
+# cat /etc/password
+# 그대로 에코만 된다
+
+docker run --entrypoint=cat lets-echo /etc/passwd
+# root:x:0:0:root:/root:/bin/bash
+# daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+# bin:x:2:2:bin:/bin:/usr/sbin/nologin
+# sys:x:3:3:sys:/dev:/usr/sbin/nologin
+# sync:x:4:65534:sync:/bin:/bin/sync
+
+# override 옵션을 이용하여 cat 으로 override 된 모습
+```
+
+# Clean up
+```sh
+docker rm $(docker ps -aq) -f
+docker rmi $(docker images -q) -f
+```

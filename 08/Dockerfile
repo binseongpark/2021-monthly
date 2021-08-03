@@ -27,18 +27,23 @@
 # ENV my_ver $my_ver
 # CMD ["python", "hello.py", "guest"]
 
-# Dockerfile - entrypoint
-FROM ubuntu:20.04
+# # Dockerfile -> ENTRYPOINT
+# FROM ubuntu:20.04
 
-RUN apt-get update \
-    && apt-get install -y \
-      curl \
-      python-dev
+# RUN apt-get update \
+#     && apt-get install -y \
+#       curl \
+#       python-dev
 
-WORKDIR /root
-COPY hello.py .
-ENV my_ver 1.0
+# WORKDIR /root
+# COPY hello.py .
+# ENV my_ver 1.0
 
-# CMD ["python", "hello.py", "guest"]
-# ENTRYPOINT ["python", "hello.py", "guest"]
-ENTRYPOINT ["python", "hello.py"]
+# # CMD ["python", "hello.py", "guest"]
+# # ENTRYPOINT ["python", "hello.py", "guest"]
+# ENTRYPOINT ["python", "hello.py"]
+
+# test dockerfile
+FROM ubuntu:18.04
+
+ENTRYPOINT ["echo"]
