@@ -39,3 +39,16 @@ cat /etc/os-release
 # VERSION_CODENAME=xenial
 # UBUNTU_CODENAME=xenial
 ```
+
+# 이미지 tag 달기
+```sh
+docker tag nginx lemonbin/nginx
+
+...
+
+docker images
+
+...
+
+docker push lemonbin/nginx
+```
