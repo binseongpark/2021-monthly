@@ -87,3 +87,59 @@ kubectl get node docker-desktop -o wide
 kubectl get node docker-desktop -o jsonpath="{.status.addresses[0].address}"
 ```
 자세한 내용은 링크 참조 https://kubernetes.io/docs/reference/kubectl/jsonpath
+
+# 모든 리소스 조회
+```sh
+kubectl api-resources
+# NAME                              SHORTNAMES   APIVERSION                        NAMESPACED   KIND
+# bindings                                       v1                                true         Binding
+# componentstatuses                 cs           v1                                false        ComponentStatus
+# configmaps                        cm           v1                                true         ConfigMap
+```
+NAMESPACED true 이면 네임스페이스 레벨의 리소스이고, false 이면 클러스터 레벨 리소스
+네임스페이스 리소소의 대표적인 예는 Pod, 클러스터 레벨의 대표적인 리소스는 Node
+
+```sh
+# 네임스페이스 레벨의 API 리소스만 탐색
+kubectl api-resources --namespaced=true
+```
+
+# 리소스 정의 설명
+```sh
+kubectl explain pods
+```
+
+# 클러스터 상태 확인
+```sh
+kubectl cluster-info
+kubectl get node
+kubectl get pod -n kube-system
+```
+
+# 클라이언트 설정 파일
+```sh
+kubectl config <SUBCOMMAND>
+
+kubectl config view
+# apiVersion: v1
+# clusters:
+# - cluster:
+#     certificate-authority-data: DATA+OMITTED
+#     server: https://kubernetes.docker.internal:6443
+#   name: docker-desktop
+# contexts:
+```
+kubectl 툴은 내부적으로 KUBECONFIG ($HOME/.kube/config) 설정 파일을 참조하여 마스터 주소, 인증 정보 등을 관리. kubectl의 설정값을 바꾸기 위해서 해당 파일을 직접 수정할 수도 있고, kubectl config 명령을 사용할 수도 있다. 
+
+- clusters: kubectl 툴이 바라보는 클러스터 정보를 입력. 원격에 위치한 클러스터인 경우 원격 주소가 입력
+- users: 쿠버네티스 클러스터에 접속하는 사용자를 정의
+- contexts: cluster와 user를 연결해주는 것을 context 라고 한다. 
+
+# cheatsheet
+
+https://kubernetes.io/docs/reference/kubectl/cheatsheet
+
+# Clean up
+```sh
+kubectl delete pod --all
+```
