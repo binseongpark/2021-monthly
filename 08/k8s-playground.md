@@ -444,3 +444,67 @@ kubectl create secret generic user-info-from-file \
 
 # Secret 활용
 `secret-volume.yaml`, `secret-env.yaml`, `secret-envfrom.yaml` 참조
+
+# 메타데이터 전달
+쿠버네티스에서 Pod의 메타데이터를 컨테이너에게 전달할 수 있는 메커니즘을 제공. Download API라고 함. 실행되는 Pod의 정보를 컨테이너에 노출하고 싶을 때 사용. ConfigMap, Secret과 마찬가지로 환경변수와 볼륨 연결을 통해 컨테이너에 정보를 전달할 수 있음.
+```sh
+# downward-volume.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: downward-volume
+  labels:
+    zone: ap-north-east
+    cluster: cluster1
+spec:
+  restartPolicy: OnFailure
+  containers:
+  - name: downward
+    image: k8s.gcr.io/busybox
+    command: ["sh", "-c"]
+    args: ["cat /etc/podinfo/labels"]
+    volumeMounts:
+    - name: podinfo
+      mountPath: /etc/podinfo
+  volumes:
+  - name: podinfo
+    downwardAPI:
+      items:
+      - path: "labels"
+        fieldRef:
+          fieldPath: metadata.labels
+```
+- downloadAPI: DownloadAPI 볼륨 사용을 선언
+    - items: 메타데이터로 사용할 아이템 리스트를 지정
+        - path: 볼륨과 연결될 컨테이너 내부 path를 지정
+        - fieldRef: ㅊ마조할 필드를 선언
+            - fieldPath: Pod의 메타데이터 필드를 지정
+
+# Service
+```sh
+# myservice.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    hello: world
+  name: myservice
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: mynginx
+```
+- apiVersion: Pod와 마찬가지로 v1 API 버전
+- kind: Service 리소스를 선언
+- metadata: 리소스의 메타 정보를 나타냄
+    - labels: Service에도 라벨 부여 가능
+    - name: 이름을 지정. **해당 이름이 도메인 주소로 활용**
+- spec: Service의 스펙을 정의
+    - ports: Service의 포트들을 정의
+        - port: Service로 들어오는 포트를 지정
+        - protocol: 사용하는 프로토콜을 지정. TCP, UDP, HTTP 등이 있음
+        - targetPort: 트래픽을 전달할 컨테이너의 포트를 지정
+    - selector: 트래픽을 전달할 컨테이너의 라벨을 선택. run=mynginx 이면 run=mynginx 라벨을 가진 Pod에 Service 트래픽을 전달
