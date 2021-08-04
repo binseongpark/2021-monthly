@@ -2,8 +2,8 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  # labels:
-  #   hello: world
+  labels:
+    hello: world
   name: mynginx
 spec:
   containers: 

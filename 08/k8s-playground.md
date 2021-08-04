@@ -155,3 +155,101 @@ kubectl run mynginx --image nginx --dry-run=client -o yaml > temp.yaml
     - containers: 1개 이상의 컨테이너를 정의
         - name: 컨테이너의 이름을 표기
         - image: 컨테이너의 이미지 주소를 지정
+
+`kubectl run <NAME> 을 이용하면 run=<NAME> 라벨이 자동으로 추가`
+
+# 라벨 정보 확인
+```sh
+# hello 라벨값 표시
+k get pod mynginx -L hello
+# NAME      READY   STATUS    RESTARTS   AGE   HELLO
+# mynginx   1/1     Running   0          23s   world
+
+# 전체 라벨 확인
+k get pod mynginx --show-labels
+# NAME      READY   STATUS    RESTARTS   AGE   LABELS
+# mynginx   1/1     Running   0          70s   hello=world
+```
+
+# nodeSelector
+라벨링 시스템을 이용하여 Pod 가 특정 노드에 할당되도록 설정 가능
+```sh
+  nodeSelector:
+    disktype: ssd
+```
+노드의 `disktype`라벨이 ssd 인 노드에 할당. 만약 2개 이상의 노드에 동일한 라벨이 부여되어 있을 경우, 노드의 상태를 확인하여 최적의 노드를 선택해서 할당
+
+# 실행 명령 및 파라미터 지정
+- command: 컨테이너의 시작 실행 명령을 지정. 도커의 ENTRYPOINT 에 대응되는 property
+- args: 실행 명령에 넘겨줄 파라미터를 지정. 도커의 CMD 에 대응되는 property
+- restartPolicy: Pod 재시작 정책을 설정
+    - Always: Pod 종료 시 항상 재시작을 시도(default)
+    - Never: 재시작을 시도하지 않음
+    - OnFailure: 실패 시에만 재시작을 시도
+
+
+# 환경변수
+```sh
+# env.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: env
+spec:
+  containers: 
+  - name: nginx
+    image: nginx
+    env:
+    - name: hello
+      value: "world!"
+```
+
+```sh
+k exec env -- printenv | grep hello
+# PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+# HOSTNAME=env
+# hello=world! # here~
+# KUBERNETES_PORT_443_TCP_PROTO=tcp
+# KUBERNETES_PORT_443_TCP_PORT=443
+# KUBERNETES_PORT_443_TCP_ADDR=10.96.0.1
+# KUBERNETES_SERVICE_HOST=10.96.0.1
+# KUBERNETES_SERVICE_PORT=443
+# KUBERNETES_SERVICE_PORT_HTTPS=443
+# KUBERNETES_PORT=tcp://10.96.0.1:443
+# KUBERNETES_PORT_443_TCP=tcp://10.96.0.1:443
+# NGINX_VERSION=1.21.1
+# NJS_VERSION=0.6.1
+# PKG_RELEASE=1~buster
+# HOME=/root
+```
+
+# 볼륨 연결
+- volumeMounts: 컨테이너 내부에 사용될 볼륨을 선언
+    - mountPath: 컨테이너 내부에 볼륨이 연결될 위치를 지정
+    - name: volumeMounts와 volumes을 연결하는 식별자
+- volumes: Pod에서 사용할 volume 을 지정
+    -name: volumeMounts와 volumes을 연결하는 식별자
+    - hosPath: 호스트 서버의 연결위치를 지정
+
+```sh
+k exec volume -- ls /container-volume
+```
+
+```sh
+# volume-empty.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: volume-empty
+spec:
+  containers: 
+  - name: nginx
+    image: nginx
+    volumeMounts:
+    - mountPath: /container-volume
+      name: my-volume
+  volumes:
+  - name: my-volume
+    emptyDir: {}
+```
+위처럼 만들면 컨테이너 내부에 데이터를 저장하는 것과 다르지 않지만 여러개가 떠있을경우 서로 디렉토리를 공유한다는 점이 다름
