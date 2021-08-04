@@ -4,6 +4,7 @@ kind: Pod
 metadata:
   labels:
     hello: world
+    run: mynginx
   name: mynginx
 spec:
   containers: 

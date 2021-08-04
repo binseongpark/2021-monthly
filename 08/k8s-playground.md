@@ -508,3 +508,90 @@ spec:
         - protocol: 사용하는 프로토콜을 지정. TCP, UDP, HTTP 등이 있음
         - targetPort: 트래픽을 전달할 컨테이너의 포트를 지정
     - selector: 트래픽을 전달할 컨테이너의 라벨을 선택. run=mynginx 이면 run=mynginx 라벨을 가진 Pod에 Service 트래픽을 전달
+
+```sh
+kubectl run client --image nginx
+
+kubectl exec client -- curl <POD_IP>
+
+kubectl exec client -- curl <CLUSTER_IP>
+
+k exec client -- sh -c "apt update && apt install -y dnsutils"
+
+kubectl exec client -- nslookup myservice
+# Server:         10.96.0.10
+# Address:        10.96.0.10#53
+
+# Name:   myservice.default.svc.cluster.local
+# Address: 10.107.82.102
+```
+
+# Service 도메인 주소 법칙
+```sh
+<서비스 이름>.<네임스페이스>.svc.cluster.local
+```
+
+# 클러스터 DNS 서버
+```sh
+k exec client -- cat /etc/resolv.conf
+# nameserver 10.96.0.10
+# search default.svc.cluster.local svc.cluster.local cluster.local
+# options ndots:5
+
+k get svc -n kube-system
+# NAME       TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)                  AGE
+# kube-dns   ClusterIP   10.96.0.10   <none>        53/UDP,53/TCP,9153/TCP   142d
+
+k get svc -n kube-system --show-labels
+
+kubectl get pod -n kube-system -l k8s-app=kube-dns
+```
+kube-system 이 kube-dns Service 의 주인
+
+# Service 종류
+
+## ClusterIP
+```sh
+kubectl run cluster-ip --image nginx --expose --port 80 \
+    --dry-run=client -o yaml > cluster-ip.yaml
+```
+```sh
+# cluster-ip.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: cluster-ip
+spec:
+  # type: ClusterIP  # 생략되어 있음
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: cluster-ip
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: cluster-ip
+  name: cluster-ip
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+    ports:
+    - containerPort: 80
+```
+
+```sh
+kubectl apply -f cluster-ip.yaml
+
+kubectl get svc cluster-ip -oyaml | grep type
+# type: ClusterIP
+
+kubectl exec client -- curl -s cluster-ip:8080
+```
+
+## NodePort
+## LoadBalancer
