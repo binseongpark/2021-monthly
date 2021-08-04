@@ -143,3 +143,15 @@ https://kubernetes.io/docs/reference/kubectl/cheatsheet
 ```sh
 kubectl delete pod --all
 ```
+
+# 템플릿 생성
+```sh
+kubectl run mynginx --image nginx --dry-run=client -o yaml > temp.yaml
+```
+- metadata: 리소스의 메타 정보를 표기
+    - labels: 리소스의 라벨정보를 표기
+    - name: 리소스의 이름을 표기
+- spec: 리소스의 스펙을 정의. spec 은 리소스마다 다르게 정의됨
+    - containers: 1개 이상의 컨테이너를 정의
+        - name: 컨테이너의 이름을 표기
+        - image: 컨테이너의 이미지 주소를 지정
