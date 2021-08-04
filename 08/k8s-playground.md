@@ -253,3 +253,194 @@ spec:
     emptyDir: {}
 ```
 위처럼 만들면 컨테이너 내부에 데이터를 저장하는 것과 다르지 않지만 여러개가 떠있을경우 서로 디렉토리를 공유한다는 점이 다름
+
+
+# 리소스 관리
+
+## request
+Pod가 보장받을 수 있는 최소 리소스 사용량을 정의
+```sh
+# requests.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: requests
+spec:
+  containers: 
+  - name: nginx
+    image: nginx
+    resources:
+      requests:
+        cpu: "250m"
+        memory: "500Mi"
+```
+1000m은 1core
+250m은 0.25core
+
+1Mib(2^20 bytes)
+
+## limits
+Pod가 최대로 사용할 수 있는 최대 리소스 사용량을 정의
+
+# 상태 확인
+
+## livenessProbe
+컨테이너가 정상적으로 살아있는지 확인하기 위해 livenessProbe property를 이용. Pod가 정상동작하는지 확인하며, 자가치유를 위한 판단 기준으로 활용
+
+## readinessProbe
+Pod 생성 직후, 트래픽을 받을 준비가 완료되었는지 확인하는 property. Jenkins 서버와 같이 처음 구동하는데에 시간이 오래 걸리는 웹 서비스라면 구동이 완료된 이후에 트래픽을 받아야 함. 이런 경우, readinessProbe을 통해서 해당 Pod의 초기화가 완료되었다는 것을 쿠버네티스에 알리는 용도로 사용
+
+```sh
+# readiness-cmd.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: readiness-cmd
+spec:
+  containers: 
+  - name: nginx
+    image: nginx
+    readinessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/ready
+```
+
+```sh
+# 아래 코드 이전은 ready 가 되지 않음
+kubectl exec readiness-cmd -- touch /tmp/ready
+# readinessProbe 가 통과하여 ready 상태가 됨
+```
+명령 실행을 통해서도 정상 여부를 확인할 수 있음
+
+# 2개 컨테이너 실행
+```sh
+# second.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: second
+spec:
+  containers: 
+  - name: nginx
+    image: nginx
+  - name: curl
+    image: curlimages/curl
+    command: ["/bin/sh"]
+    args: ["-c", "while true; do sleep 5; curl -s localhost; done"]
+```
+
+```sh
+# 컨테이너가 두개라 그냥 로그를 실행하면 에러 발생
+k logs -f second
+# error: a container name must be specified for pod second, choose one of: [nginx curl]
+
+# 컨테이너 지정
+k logs -f second -c nginx
+```
+
+# 초기화 컨테이너
+`init-container.yaml`파일 참조
+
+
+# Config 설정
+
+# ConfigMap 리소스 생성
+```sh
+kubectl create configmap <key> <data-source>
+
+kubectl create configmap game-config --from-file=game.properties
+
+kubectl get cm game-config -o yaml
+
+# --from-literal
+kubectl create configmap special-config \
+    --from-literal=special.power=10 \
+    --from-literal=special.strength=20
+
+# yaml 로도 가능
+kubectl apply -f monster-config.yaml
+```
+
+# 환경변수 - valueFrom
+- env: 환경변수 사용을 선언
+- name: 환경변수의 key를 지정
+- valueFrom: 기존의 value property 대신 valueFrom 을 사용함으로써 다른 리소스의 정보를 참조하는 것을 선언
+    - configMapKeyRef: ConfigMap의 키를 참조
+        - name: ConfigMpa의 이름을 설정
+        - key: ConfigMap내에 포함된 설정값 중 특정 설정값을 명시적으로 선택
+
+```sh
+# special-env.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: special-env
+spec:
+  restartPolicy: OnFailure
+  containers:
+  - name: special-env
+    image: k8s.gcr.io/busybox
+    command: [ "printenv" ]
+    args: [ "special_env" ]
+    env:
+    - name: special_env
+      valueFrom:
+        configMapKeyRef:
+          name: special-config
+          key: special.power
+```
+`special-config 라는 ConfigMap 중 special.power 를 special-env 로 써라`
+
+# 환경변수 - envFrom
+```sh
+# monster-env.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: monster-env
+spec:
+  restartPolicy: OnFailure
+  containers:
+  - name: monster-env
+    image: k8s.gcr.io/busybox
+    command: [ "printenv" ]
+    # env 대신에 envFrom 사용
+    envFrom:
+    - configMapRef:
+        name: monster-config
+```
+- envFrom: 기존 env 대신 envFrom 을 사용함으로써 ConfigMap 설정값을 환경변수 전체로 사용하는 것을 선언
+    - configMapRef: ConfigMap의 특정키가 아닌 전체 ConfigMap을 사용하도록 설정
+        - name: 사용하려는 ConfigMap의 이름을 지정
+
+기존환경변수에 추가가 되는 듯
+
+# Secret 리소스 생성
+```sh
+echo -ne admin | base64
+echo ne password123 | base64
+```
+
+```sh
+# user-info-stringdata.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: user-info-stringdata
+type: Opaque
+stringData:
+  username: admin
+  password: password123
+```
+stringData property를 이용하면 base64 인코딩을 직접 처리
+
+--from-env-file 옵션을 이용하여 properties 파일로부터 Secret 을 만들수도 있음
+```sh
+kubectl create secret generic user-info-from-file \
+    --from-env-file=user-info.properties
+```
+
+# Secret 활용
+`secret-volume.yaml`, `secret-env.yaml`, `secret-envfrom.yaml` 참조
