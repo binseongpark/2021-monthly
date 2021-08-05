@@ -628,3 +628,16 @@ spec:
 NodePort는 단지 Pod 가 위치한 노드 뿐만 아니라, 모든 노드에서 동일하게 서비스 끝점을 제공. 예를 들어 위 Pod 가 마스터 노드에 위치한다고 가정. 이 경우라 하더라도 마스터 노드, 워커 노드 모두 동일한 NodePor로 서비스에 접근할 수 있음
 
 ## LoadBalancer
+
+## ExternalName
+Externalname 타입은 쿠버네티스 클러스터에 편입되지 않는 외부 서비스에 쿠버네티스 네트워킹 기능을 연결하고 싶은 경우 사용
+
+```sh
+kubectl delete pod --all
+kubectl delete 
+```
+
+
+# 쿠버네티스 컨트롤러
+
+# Replicaset
