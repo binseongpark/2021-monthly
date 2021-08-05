@@ -641,3 +641,42 @@ kubectl delete
 # 쿠버네티스 컨트롤러
 
 # Replicaset
+
+# Deployment
+Replicaset 리소스와 유사하지만 리소스의 이름처럼 애플리케이션 업데이트 및 배포에 특화된 기능이 있음
+- 롤링 업데이트를 지원하고 롤링 업데이트되는 Pod의 비율을 조절
+- 업데이트 히스토리를 저장하고 다시 롤백할 수 있는 기능을 제공
+- Replicaset과 마찬가지로 Pod의 개수를 늘릴 수 있음(scale out)
+- 배포 상태를 확인
+
+```sh
+# mydeploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydeploy
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      run: nginx
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%  
+      maxSurge: 25%
+  template:
+    metadata:
+      labels:
+        run: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.7.9
+```
+- replicas: ReplicaSet과 마찬가지로 유지할 Pod의 개수를 정의
+- selector.matchLabels: ReplicaSet과 마찬가지로 라벨링 시스템을 이용하여 배포를 수생할 Pod를 선택
+- strategy.type: 배포전략 종류를 선택. RollingUpdate와 Recreate 이 있음. RollingUpdate 타입 선택 시, 점진적으로 업데이트가 일어남. 서비스가 중단되면 안되는 웹 페이지 등에서 활용할 수 있음. 이때 다음 설정값(strategy.rollingUpdate)에 따라 얼마나 점진적으로 업데이트가 일어날지 설정할 수 있음. Recreate 타입을 선택 시, 일시적으로 전체 Pod가 삭제되고 새로운 Pod가 전체 생성. 개발 중인 Deployment를 제외하고는 대부분의 경우 RollingUpdate 를 사용
+- strategy.rollingUpdate.maxUnavailable: 최대 중단 Pod 허용 개수(또는 비율)를 지정. 예를 들어, 총 10개 replica에 maxUnavailable의 비율이 25%면 약 2개(소수점 내림)의 예전 Pod가 RollingUpdate 중에 일시 중단될 수 있다는 것을 의미
+- strategy.rollingUpdate.maxSurge: 최대 초과 Pod 허용 개수(또는 비율)를 지정. 예를 들어, 총 10개 replica에 maxSurge의 비율이 25%면 약 3개(소수점 올림)의 새로운 Pod가 초과하여 최대 13개까지 생성될 수 있다는 것을 의미
+- template: 복제할 Pod를 정의. Pod의 spec 과 동일(metadata, spec)
