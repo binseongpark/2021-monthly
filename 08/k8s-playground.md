@@ -594,4 +594,37 @@ kubectl exec client -- curl -s cluster-ip:8080
 ```
 
 ## NodePort
+```sh
+# node-port.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-port
+spec:
+  type: NodePort     # type 추가
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 80
+    nodePort: 30080  # 호스트(노드)의 포트 지정
+  selector:
+    run: node-port
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: node-port
+  name: node-port
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+    ports:
+    - containerPort: 80
+```
+- nodePort: 호스트 서버에서 사용할 포트 번호를 정의. 쿠버네티스에서 제공하는 NodePort range는 30000-32767
+
+NodePort는 단지 Pod 가 위치한 노드 뿐만 아니라, 모든 노드에서 동일하게 서비스 끝점을 제공. 예를 들어 위 Pod 가 마스터 노드에 위치한다고 가정. 이 경우라 하더라도 마스터 노드, 워커 노드 모두 동일한 NodePor로 서비스에 접근할 수 있음
+
 ## LoadBalancer
