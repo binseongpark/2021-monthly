@@ -680,3 +680,29 @@ spec:
 - strategy.rollingUpdate.maxUnavailable: 최대 중단 Pod 허용 개수(또는 비율)를 지정. 예를 들어, 총 10개 replica에 maxUnavailable의 비율이 25%면 약 2개(소수점 내림)의 예전 Pod가 RollingUpdate 중에 일시 중단될 수 있다는 것을 의미
 - strategy.rollingUpdate.maxSurge: 최대 초과 Pod 허용 개수(또는 비율)를 지정. 예를 들어, 총 10개 replica에 maxSurge의 비율이 25%면 약 3개(소수점 올림)의 새로운 Pod가 초과하여 최대 13개까지 생성될 수 있다는 것을 의미
 - template: 복제할 Pod를 정의. Pod의 spec 과 동일(metadata, spec)
+
+maxUnavailable과 maxSurge는 strategy.type이 rollingUpdate 일 경우에만 사용
+
+- Deployment: 배포 담당
+- ReplicaSet: 복제 담당
+- Pod: 컨테이너 실행 담당
+
+# deployment 업데이트
+```sh
+kubectl set image deployment mydeploy nginx=nginx:1.9.1 --record
+```
+
+```sh
+k rollout history deployment mydeploy
+
+k rollout undo deployment mydeploy
+```
+--recrod 옵션을 사용하면 history에 남고 사용하지 않으면 <none> 으로 표시
+```sh
+# REVISION  CHANGE-CAUSE
+# 2         kubectl set image deployment mydeploy nginx=nginx:1.9.1 --record=true
+# 3         <none>
+```
+
+# DaemonSet
+모든 노드에 동일한 Pod를 실행시키고자 할 때 사용하는 리소스
