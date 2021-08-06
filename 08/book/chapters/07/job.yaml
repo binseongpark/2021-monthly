@@ -8,7 +8,8 @@ spec:
     spec:
       containers:
       - name: ml
-        image: $USERNAME/train
+        # image: $USERNAME/train
+        image: lemonbin/train
         args: ['3', 'softmax', '0.5']
       restartPolicy: Never
   backoffLimit: 2
