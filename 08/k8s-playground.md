@@ -706,3 +706,16 @@ k rollout undo deployment mydeploy
 
 # DaemonSet
 모든 노드에 동일한 Pod를 실행시키고자 할 때 사용하는 리소스
+
+## Ingress
+
+# IngressController
+Ingress 리소스 자체로는 어떠한 프로그램이 작동하는 코드가 아니라 트래픽 처리에 대한 정보를 담고 있는 정의(또는 규칙)에 가까움. 실제로 Ingress의 규칙을 읽고 외부의 트래픽을 Service로 전달하는 주체는 Ingress Controller.
+
+- NGINX Ingress
+- HAProxy
+- AWS ALB Ingress
+- Ambassador
+- Kong
+- traefik
+
