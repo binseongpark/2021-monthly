@@ -39,5 +39,4 @@
 - graphql server
 - docker, k8s
 - k8s 자격증따기
-
 - make develop
