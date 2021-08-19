@@ -15,7 +15,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private static final String[] PUBLIC = new String[]{""};
+    private static final String[] PUBLIC = new String[]{"/main"};
 
     final AuthService authService;
 
@@ -27,7 +27,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 //        super.configure(http);
         http.authorizeRequests()
-                .antMatchers("/test").permitAll()
+                .antMatchers(PUBLIC).permitAll()
                 .anyRequest().authenticated().and()
                 .cors().and().csrf().disable()
                 .headers().frameOptions().disable().and()
@@ -36,7 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .usernameParameter("userId")
                     .passwordParameter("userPw")
 //                    .loginPage("/login")
-    //                .successForwardUrl("/login/success")
+                    .successForwardUrl("/login/success")
                     .failureUrl("/login")
                     .defaultSuccessUrl("/main", true)
                 .and()
