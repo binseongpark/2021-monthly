@@ -17,7 +17,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private static final String[] PUBLIC = new String[]{"/", "/main"};
+    private static final String[] PUBLIC = new String[]{"/", "/main", "/ping"};
 
     final AuthService authService;
 
