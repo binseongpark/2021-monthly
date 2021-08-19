@@ -3,6 +3,7 @@ package com.example.backendmain.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,8 +15,9 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebSecurity
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private static final String[] PUBLIC = new String[]{"/main"};
+    private static final String[] PUBLIC = new String[]{"/", "/main"};
 
     final AuthService authService;
 
@@ -27,18 +29,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 //        super.configure(http);
         http.authorizeRequests()
+                .antMatchers("/**").permitAll()
                 .antMatchers(PUBLIC).permitAll()
                 .anyRequest().authenticated().and()
                 .cors().and().csrf().disable()
                 .headers().frameOptions().disable().and()
                 .formLogin()
-                    .loginProcessingUrl("/login/process")
-                    .usernameParameter("userId")
-                    .passwordParameter("userPw")
+                .loginProcessingUrl("/login/process")
+                .usernameParameter("userId")
+                .passwordParameter("userPw")
 //                    .loginPage("/login")
-                    .successForwardUrl("/login/success")
-                    .failureUrl("/login")
-                    .defaultSuccessUrl("/main", true)
+                .successForwardUrl("/login/success")
+                .failureUrl("/login")
+                .defaultSuccessUrl("/main", true)
                 .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .invalidateHttpSession(true)
