@@ -22,8 +22,9 @@
 ## 7월
 
 ## 8월
-
+- k8s
 ## 9월
+- spring-boot + vuejs + spring-security
 
 ## 10월
 

@@ -49,22 +49,22 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
-  console.log(to.matched.some((route) => route.meta.requiresAuth))
-  if (to.matched.some((route) => route.meta.requiresAuth)) {
-    console.log(store.state.auth.loggedIn)
-    if (store.state.auth.loggedIn) {
-      next()
-    } else {
-      next({
-        path: 'login',
-        query: { redirect: to.fullPath }
-      })
-    }
-  } else {
-    next()
-  }
-})
+// router.beforeEach((to, from, next) => {
+//   console.log(to.matched.some((route) => route.meta.requiresAuth))
+//   if (to.matched.some((route) => route.meta.requiresAuth)) {
+//     console.log(store.state.auth.loggedIn)
+//     if (store.state.auth.loggedIn) {
+//       next()
+//     } else {
+//       next({
+//         path: 'login',
+//         query: { redirect: to.fullPath }
+//       })
+//     }
+//   } else {
+//     next()
+//   }
+// })
 
 new Vue({
   store,

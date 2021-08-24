@@ -9,6 +9,9 @@
       <b-row class="mt-4 mb-4">
         <b-table hover :items="list"></b-table>
       </b-row>
+      <b-row class="mt-4 mb-4">
+        <iframe src="http://localhost:9000" frameborder="0" width="700px" height="400px"></iframe>
+      </b-row>
     </b-container>
   </div>
 </template>
