@@ -25,6 +25,7 @@
 - 개인사정으로 8월이 k8s 입네다
 
 ## 9월
+- spring-boot + vuejs + spring-security
 
 ## 10월
 
@@ -40,5 +41,4 @@
 - graphql server
 - docker, k8s
 - k8s 자격증따기
-
 - make develop
